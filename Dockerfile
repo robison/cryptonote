@@ -1,14 +1,17 @@
 FROM alpine:3.5
 
+# Create our group & user, along with homedir
+RUN addgroup -S app && \
+    adduser -S app -G app -h /app
+
 ENV RAILS_ENV="docker" \
     RACK_ENV="docker" \
     BUNDLE_SILENCE_ROOT_WARNING=1
 
-RUN mkdir /app
 WORKDIR /app
 ADD . /app
 
-# Lines 33 & 34 here are a quick fix to get around Heroku not
+# Lines 36 & 37 here are a quick fix to get around Heroku not
 # working well with sqlite3 in the Gemfile.
 
 RUN apk update && \
@@ -31,7 +34,7 @@ RUN apk update && \
         sqlite-dev \
         tzdata && \
     echo "gem 'sqlite3'" >> Gemfile && \
-    bundle install --clean  --without production && \
+    bundle lock --update=sqlite3 && \
     bundle install --clean --deployment --without production && \
     bundle exec rake db:drop && \
     bundle exec rake db:migrate && \
@@ -44,7 +47,9 @@ RUN apk update && \
         /root/.bundle/* \
         /root/.gem/* \
         /usr/lib/node_modules/npm/node_modules/ \
-        /app/vendor/bundle/ruby/*/cache
+        /app/vendor/bundle/ruby/*/cache && \
+    chown -R app:app /app
 
+USER app:app
 CMD bundle exec rails server -b 0.0.0.0 -p 3000
 EXPOSE 3000
