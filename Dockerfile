@@ -28,6 +28,7 @@ RUN apk update && \
         sqlite-dev \
         tzdata && \
     bundle install --clean --deployment --without production && \
+    gem install sqlite && \
     bundle exec rake db:drop && \
     bundle exec rake db:migrate && \
     bundle exec rake assets:precompile && \
