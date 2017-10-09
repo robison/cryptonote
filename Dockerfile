@@ -51,5 +51,5 @@ RUN apk update && \
     chown -R app:app /app
 
 USER app:app
-CMD bundle exec rails server -b 0.0.0.0 -p 3000
+CMD ["/usr/bin/bundle","exec","rails","server","-b","0.0.0.0","-p","3000"]
 EXPOSE 3000
