@@ -7,7 +7,6 @@ gem 'rake', '~> 11.2.2'
 
 group :development, :docker, :test do
   gem 'annotate', '~> 2.6.3'
-  gem 'sqlite3'
 end
 
 group :production do
