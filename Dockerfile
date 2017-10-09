@@ -8,6 +8,9 @@ RUN mkdir /app
 WORKDIR /app
 ADD . /app
 
+# Lines 33 & 34 here are a quick fix to get around Heroku not
+# working well with sqlite3 in the Gemfile.
+
 RUN apk update && \
     apk upgrade && \
     apk --no-cache add --update --virtual .build \
@@ -27,8 +30,8 @@ RUN apk update && \
         ruby-json \
         sqlite-dev \
         tzdata && \
-    echo "gem 'sqlite3'" >> Gemfile && \ # This is a dirty hack to get around Heroku
-    bundle install --clean  --without production && \ # not playing well with sqlite3
+    echo "gem 'sqlite3'" >> Gemfile && \
+    bundle install --clean  --without production && \
     bundle install --clean --deployment --without production && \
     bundle exec rake db:drop && \
     bundle exec rake db:migrate && \
