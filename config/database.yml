@@ -1,0 +1,19 @@
+development:
+  adapter: sqlite3
+  database: db/cryptonote-dev.sqlite3
+  host: localhost
+
+docker:
+  adapter: sqlite3
+  database: db/cryptonote-docker.sqlite3
+  host: localhost
+
+test:
+  adapter: sqlite3
+  database: db/cryptonote-test.sqlite3
+  host: localhost
+
+production:
+  adapter: sqlite3
+  database: db/production.sqlite3
+  host: localhost
