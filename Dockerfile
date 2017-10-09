@@ -27,8 +27,9 @@ RUN apk update && \
         ruby-json \
         sqlite-dev \
         tzdata && \
+    echo "gem 'sqlite3'" >> Gemfile && \ # This is a dirty hack to get around Heroku
+    bundle install --clean  --without production && \ # not playing well with sqlite3
     bundle install --clean --deployment --without production && \
-    gem install sqlite && \
     bundle exec rake db:drop && \
     bundle exec rake db:migrate && \
     bundle exec rake assets:precompile && \
